@@ -1,0 +1,6 @@
+[submodule "DemoDeployFront"]
+	path = DemoDeployFront
+	url = https://github.com/aKimtsPro/DemoDeployFront
+[submodule "DemoDeploy"]
+	path = DemoDeploy
+	url = https://github.com/aKimtsPro/DemoDeploy
