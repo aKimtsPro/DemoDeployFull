@@ -1,0 +1,49 @@
+version: "3.9"
+
+name: 'demo-deploy-prod'
+networks:
+  deploy:
+
+services:
+  proxy:
+    hostname: proxy
+    image: nginx
+    networks:
+      - deploy
+    ports:
+      - '80:80'
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - deploy_db
+      - deploy_back
+      - deploy_front
+
+  deploy_db:
+    image: postgres
+    hostname: 'deploy-db'
+    env_file: './DemoDeploy/db/env/.prod.env'
+    ports:
+      - '5434:5432'
+    volumes:
+      - "./DemoDeploy/db/data:/var/lib/postgresql/data"
+      - "./DemoDeploy/db/script:/docker-entrypoint-initdb.d"
+    networks:
+      - deploy
+
+  deploy_back:
+    build: ./DemoDeploy
+    hostname: 'deploy-back'
+    env_file: './DemoDeploy/env/.prod.env'
+    ports:
+      - "8088:8080"
+    networks:
+      - deploy
+    depends_on:
+      - deploy_db
+
+  deploy_front:
+    build: ./DemoDeployFront
+    hostname: 'deploy-front'
+    networks:
+      - deploy
