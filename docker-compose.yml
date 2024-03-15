@@ -26,7 +26,7 @@ services:
     ports:
       - '5434:5432'
     volumes:
-      - "./DemoDeploy/db/data:/var/lib/postgresql/data"
+      - "./DemoDeploy/db/data:/pg-data"
       - "./DemoDeploy/db/script:/docker-entrypoint-initdb.d"
     networks:
       - deploy
